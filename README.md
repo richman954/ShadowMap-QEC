@@ -31,6 +31,20 @@ A 3D Spacetime block ($d=7, T=7$) with 2% healthy noise, but a broken measuremen
 * **SHADOWMAP Optimized Rate:** 23.49%
 * **Result:** McNemar $p = 1.21 \times 10^{-126}$. The engine realized the time-like edges at Column 3 were unreliable and autonomously crushed their weights (from ~3.89 down to 1.94) to route through time around the broken hardware.
 
+** Tech Stack
+* `PyMatching v2.x` (C++ Sparse Matrix Compiler)
+* `SciPy` (Sparse Matrix generation)
+* `NumPy` (Vectorized CRN noise generation)
+* `concurrent.futures` (Multi-core CPU parallelization)
+
+** Feature Roadmap
+
+Circuit-Level Noise (Stim Integration): Right now, we inject noise phenomenologically (we just randomly flip edges on a graph). In reality, quantum errors happen during the actual physical microwave pulses and gates (CNOTs, Hadamards). The next major step is integrating Google's Stim library (written by Craig Gidney) to simulate exact circuit-level gate failures, and letting Stim generate the routing matrices for PyMatching.
+
+Fully Granular Defect Maps: Currently, SHADOWMAP optimizes entire columns of the chip at once. The next step is giving the AI the power to tune the weight of every single individual edge on the chip independently, mapping exact atomic-level defects.
+
+Advanced AI Optimizers: We used a basic Darwinian genetic algorithm. To optimize a 1,000-dimensional continuous parameter space (every individual edge on a large chip), we would upgrade the AI engine to use CMA-ES (Covariance Matrix Adaptation) or Bayesian Optimization.
+
 ### Experiment 3: The "Meteor Crater" (84-Dimensional Atomic Mapping)
 We simulated a $d=7$ chip with a healthy 4% error rate, but injected a highly localized 3x3 "Meteor Crater" (18% error rate) dead in the center of the chip. We gave SHADOWMAP 84 independent continuous dimensions (every physical edge on the chip) and unleashed a Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
 
@@ -41,7 +55,7 @@ Without any prior knowledge of the grid geometry, CMA-ES built an 84x84 covarian
 
 **SHADOWMAP's Blind ASCII Render of the Hardware:**
 *(Visualizing the learned weights. Values < 2.3 are marked with `*` indicating discovered damage.)*
-
+```text
 HORIZONTAL EDGE WEIGHTS (Expected Crater: Rows 2-4, Cols 2-3):
 Row 2:   3.6    3.4  * 1.9*   2.7    4.9    3.8 
 Row 3:   3.6    3.7  * 1.8* * 1.2*   3.4    3.8 
@@ -50,19 +64,3 @@ Row 4:   4.2    4.4  * 2.0* * 1.9*   4.3    4.4
 VERTICAL EDGE WEIGHTS (Expected Crater: Rows 2-3, Cols 2-4):
 Row 2:   2.4    3.3  * 1.2* * 1.0*   2.4    3.1    2.4 
 Row 3: * 2.3*   3.6  * 1.4* * 1.3* * 1.5*   3.5    4.4
-
-
-** Tech Stack
-* `PyMatching v2.x` (C++ Sparse Matrix Compiler)
-* `SciPy` (Sparse Matrix generation)
-* `NumPy` (Vectorized CRN noise generation)
-* `concurrent.futures` (Multi-core CPU parallelization)
-
-
-** Feature Roadmap
-
-Circuit-Level Noise (Stim Integration): Right now, we inject noise phenomenologically (we just randomly flip edges on a graph). In reality, quantum errors happen during the actual physical microwave pulses and gates (CNOTs, Hadamards). The next major step is integrating Google's Stim library (written by Craig Gidney) to simulate exact circuit-level gate failures, and letting Stim generate the routing matrices for PyMatching.
-
-Fully Granular Defect Maps: Currently, SHADOWMAP optimizes entire columns of the chip at once. The next step is giving the AI the power to tune the weight of every single individual edge on the chip independently, mapping exact atomic-level defects.
-
-Advanced AI Optimizers: We used a basic Darwinian genetic algorithm. To optimize a 1,000-dimensional continuous parameter space (every individual edge on a large chip), we would upgrade the AI engine to use CMA-ES (Covariance Matrix Adaptation) or Bayesian Optimization.
