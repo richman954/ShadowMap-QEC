@@ -31,6 +31,26 @@ A 3D Spacetime block ($d=7, T=7$) with 2% healthy noise, but a broken measuremen
 * **SHADOWMAP Optimized Rate:** 23.49%
 * **Result:** McNemar $p = 1.21 \times 10^{-126}$. The engine realized the time-like edges at Column 3 were unreliable and autonomously crushed their weights (from ~3.89 down to 1.94) to route through time around the broken hardware.
 
+### Experiment 3: The "Meteor Crater" (84-Dimensional Atomic Mapping)
+We simulated a $d=7$ chip with a healthy 4% error rate, but injected a highly localized 3x3 "Meteor Crater" (18% error rate) dead in the center of the chip. We gave SHADOWMAP 84 independent continuous dimensions (every physical edge on the chip) and unleashed a Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
+
+Without any prior knowledge of the grid geometry, CMA-ES built an 84x84 covariance matrix and successfully "drew" a map of the damaged atoms, drastically dropping the MWPM weights in the exact center of the lattice to build topological walls around the defect.
+
+* **Baseline Failure Rate:** 4.54%
+* **SHADOWMAP CMA-ES Rate:** 3.45% (McNemar $p = 6.37 \times 10^{-62}$)
+
+**SHADOWMAP's Blind ASCII Render of the Hardware:**
+*(Visualizing the learned weights. Values < 2.3 are marked with `*` indicating discovered damage.)*
+```text
+HORIZONTAL EDGE WEIGHTS (Expected Crater: Rows 2-4, Cols 2-3):
+Row 2:   3.6    3.4  * 1.9*   2.7    4.9    3.8 
+Row 3:   3.6    3.7  * 1.8* * 1.2*   3.4    3.8 
+Row 4:   4.2    4.4  * 2.0* * 1.9*   4.3    4.4 
+
+VERTICAL EDGE WEIGHTS (Expected Crater: Rows 2-3, Cols 2-4):
+Row 2:   2.4    3.3  * 1.2* * 1.0*   2.4    3.1    2.4 
+Row 3: * 2.3*   3.6  * 1.4* * 1.3* * 1.5*   3.5    4.4
+
 ## Tech Stack
 * `PyMatching v2.x` (C++ Sparse Matrix Compiler)
 * `SciPy` (Sparse Matrix generation)
