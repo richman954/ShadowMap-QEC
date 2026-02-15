@@ -41,7 +41,7 @@ Without any prior knowledge of the grid geometry, CMA-ES built an 84x84 covarian
 
 **SHADOWMAP's Blind ASCII Render of the Hardware:**
 *(Visualizing the learned weights. Values < 2.3 are marked with `*` indicating discovered damage.)*
-```text
+
 HORIZONTAL EDGE WEIGHTS (Expected Crater: Rows 2-4, Cols 2-3):
 Row 2:   3.6    3.4  * 1.9*   2.7    4.9    3.8 
 Row 3:   3.6    3.7  * 1.8* * 1.2*   3.4    3.8 
@@ -51,14 +51,15 @@ VERTICAL EDGE WEIGHTS (Expected Crater: Rows 2-3, Cols 2-4):
 Row 2:   2.4    3.3  * 1.2* * 1.0*   2.4    3.1    2.4 
 Row 3: * 2.3*   3.6  * 1.4* * 1.3* * 1.5*   3.5    4.4
 
-## Tech Stack
+
+** Tech Stack
 * `PyMatching v2.x` (C++ Sparse Matrix Compiler)
 * `SciPy` (Sparse Matrix generation)
 * `NumPy` (Vectorized CRN noise generation)
 * `concurrent.futures` (Multi-core CPU parallelization)
 
 
-## Feature Roadmap
+** Feature Roadmap
 
 Circuit-Level Noise (Stim Integration): Right now, we inject noise phenomenologically (we just randomly flip edges on a graph). In reality, quantum errors happen during the actual physical microwave pulses and gates (CNOTs, Hadamards). The next major step is integrating Google's Stim library (written by Craig Gidney) to simulate exact circuit-level gate failures, and letting Stim generate the routing matrices for PyMatching.
 
