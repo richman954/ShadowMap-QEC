@@ -36,3 +36,12 @@ A 3D Spacetime block ($d=7, T=7$) with 2% healthy noise, but a broken measuremen
 * `SciPy` (Sparse Matrix generation)
 * `NumPy` (Vectorized CRN noise generation)
 * `concurrent.futures` (Multi-core CPU parallelization)
+
+
+## Feature Roadmap
+
+Circuit-Level Noise (Stim Integration): Right now, we inject noise phenomenologically (we just randomly flip edges on a graph). In reality, quantum errors happen during the actual physical microwave pulses and gates (CNOTs, Hadamards). The next major step is integrating Google's Stim library (written by Craig Gidney) to simulate exact circuit-level gate failures, and letting Stim generate the routing matrices for PyMatching.
+
+Fully Granular Defect Maps: Currently, SHADOWMAP optimizes entire columns of the chip at once. The next step is giving the AI the power to tune the weight of every single individual edge on the chip independently, mapping exact atomic-level defects.
+
+Advanced AI Optimizers: We used a basic Darwinian genetic algorithm. To optimize a 1,000-dimensional continuous parameter space (every individual edge on a large chip), we would upgrade the AI engine to use CMA-ES (Covariance Matrix Adaptation) or Bayesian Optimization.
